@@ -152,14 +152,8 @@
   }
 }
 @media (max-width: 767px) {
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem 1rem;
-    justify-items: center;
-  }
   .gallery-card {
-    width: 98vw;
+    width: 96vw;
     min-width: 120px;
     max-width: 99vw;
   }
