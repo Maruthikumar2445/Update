@@ -132,3 +132,85 @@
   background: #c0392b;
   box-shadow: 0 4px 16px rgba(231,76,60,0.18);
 }
+
+/* Overlay for modals - always on top, covers whole screen, scrollable if needed */
+.admin-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(44, 62, 80, 0.18);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  padding-top: 40px; /* ensures modal is not hidden under browser bar */
+}
+
+/* Make sure the form/modal is above and centered */
+.admin-overlay-form,
+.admin-overlay-form-modern {
+  position: relative;
+  z-index: 10000;
+  margin: 0 auto;
+  max-width: 540px;
+  width: 100%;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 24px rgba(44,62,80,0.13);
+  padding: 2.2rem 1.2rem 1.5rem 1.2rem;
+  padding-bottom: 2.5rem !important; /* More space at the bottom */
+  box-sizing: border-box;
+}
+
+.admin-overlay-form .row {
+  margin-bottom: 0 !important;
+}
+
+.admin-overlay-form .col-12.text-end {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.admin-action-btn {
+  min-width: 110px;
+  padding: 0.7rem 1.5rem;
+  border-radius: 22px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  margin-bottom: 0;
+  margin-top: 0;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+}
+
+/* Responsive: allow overlay form to fit on mobile */
+@media (max-width: 767px) {
+  .admin-overlay-form,
+  .admin-overlay-form-modern {
+    max-width: 99vw;
+    padding: 1.2rem 0.3rem 1rem 0.3rem;
+    border-radius: 12px;
+  }
+  .admin-overlay-form {
+    padding: 1.2rem 0.5rem 2.5rem 0.5rem !important;
+    border-radius: 14px;
+  }
+  .admin-overlay-form .col-12.text-end {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7rem;
+    margin-top: 1.2rem;
+    padding-bottom: 0.5rem;
+  }
+  .admin-action-btn {
+    width: 100%;
+    min-width: 0;
+    font-size: 1rem;
+    padding: 0.8rem 0;
+  }
+}

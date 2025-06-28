@@ -128,9 +128,16 @@ const TestimonialsAdmin = ({ onBack }) => {
   const handleUpdateTestimonial = async (e) => {
     e.preventDefault();
     if (!editingTestimonial) return;
+
+    let updatedImage = editTestimonialForm.image;
+    // If no new image uploaded, keep the old one
+    if (!updatedImage) {
+      updatedImage = editingTestimonial.image;
+    }
+
     await update(dbRef(database, `testimonials/${editingTestimonial.id}`), {
       ...editTestimonialForm,
-      image: editingTestimonial.image, // keep the same image
+      image: updatedImage,
     });
     setEditingTestimonial(null);
     setEditTestimonialForm({
@@ -140,6 +147,7 @@ const TestimonialsAdmin = ({ onBack }) => {
       paragraph: "",
       rating: 5,
       location: "",
+      image: null,
     });
   };
 
@@ -159,6 +167,21 @@ const TestimonialsAdmin = ({ onBack }) => {
           image: reader.result,
         }));
         setTestimonialImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Image upload handler for Edit form
+  const handleEditTestimonialImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setEditTestimonialForm((prev) => ({
+          ...prev,
+          image: reader.result,
+        }));
       };
       reader.readAsDataURL(file);
     }
@@ -487,7 +510,9 @@ const TestimonialsAdmin = ({ onBack }) => {
                 />
               </div>
               <div className="col-md-6">
-                <label className="form-label">Role</label>
+                <label className="form-label">
+                  Role <span style={{ color: "#888" }}>(optional)</span>
+                </label>
                 <input
                   type="text"
                   className="form-control"
@@ -498,7 +523,6 @@ const TestimonialsAdmin = ({ onBack }) => {
                       role: e.target.value,
                     })
                   }
-                  required
                 />
               </div>
               <div className="col-md-12">
@@ -561,6 +585,30 @@ const TestimonialsAdmin = ({ onBack }) => {
                   }
                   required
                 />
+              </div>
+              <div className="col-md-12">
+                <label className="form-label">
+                  Photo <span style={{ color: "#888" }}>(optional)</span>
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="form-control"
+                  onChange={handleEditTestimonialImageChange}
+                />
+                {(editTestimonialForm.image || editingTestimonial.image) && (
+                  <img
+                    src={editTestimonialForm.image || editingTestimonial.image}
+                    alt="Preview"
+                    style={{
+                      width: "120px",
+                      marginTop: 10,
+                      borderRadius: 8,
+                      objectFit: "cover",
+                      height: 120,
+                    }}
+                  />
+                )}
               </div>
               <div className="col-12 text-end">
                 <button
