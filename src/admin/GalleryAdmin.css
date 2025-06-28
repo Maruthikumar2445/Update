@@ -1,0 +1,248 @@
+.admin-gallery-card {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+}
+.admin-gallery-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 15px 15px 0 0;
+}
+.admin-gallery-content {
+  padding: 1rem 1.2rem 0.5rem 1.2rem;
+}
+.admin-gallery-destination {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1abc9c;
+}
+/* Gallery Section */
+.gallery-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.2rem 0.5rem;
+  margin-top: 1rem;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+}
+
+/* Flex row for sidebar buttons and grid */
+.admin-main-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 2.5rem;
+  width: 100%;
+}
+
+/* Stack the buttons vertically with space */
+.admin-header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  min-width: 180px;
+  margin-bottom: 2.5rem;
+}
+
+/* Responsive grid for gallery: 2 per row on mobile and up, 1 per row on very small screens */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem 1rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.gallery-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44,62,80,0.08);
+  padding: 1rem 0.7rem;
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  word-break: break-word;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gallery-image-wrapper {
+  width: 100%;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 0.7rem;
+  background: #f7f7f7;
+}
+
+.gallery-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.gallery-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0.5rem 0 0.2rem 0;
+  text-align: center;
+  word-break: break-word;
+}
+
+.gallery-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  width: 100%;
+  justify-content: center;
+}
+
+/* Button styles (reuse from blogs for consistency) */
+.admin-update-btn,
+.admin-delete-btn {
+  font-size: 1rem;
+  padding: 0.7rem 2rem;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s;
+}
+
+.admin-update-btn {
+  background: #ffc107;
+  color: #333;
+}
+.admin-update-btn:hover {
+  background: #ffb300;
+}
+
+.admin-delete-btn {
+  background: #e74c3c;
+  color: #fff;
+}
+.admin-delete-btn:hover {
+  background: #c0392b;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .gallery-grid {
+    gap: 1rem 0.7rem;
+  }
+  .gallery-card {
+    padding: 0.8rem 0.4rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .admin-main-row {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    padding: 0;
+  }
+  .admin-header-actions {
+    flex-direction: row;
+    gap: 0.7rem;
+    min-width: unset;
+    margin-bottom: 1rem;
+    justify-content: center;
+    width: 100%;
+    align-items: stretch;
+  }
+  .admin-action-btn,
+  .admin-update-btn,
+  .admin-delete-btn {
+    width: 100%;
+    min-width: 0;
+    font-size: 0.97rem;
+    padding: 0.7rem 0.5rem;
+    margin: 0.2rem 0;
+    border-radius: 16px;
+    box-sizing: border-box;
+    text-align: center;
+    white-space: normal;
+  }
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem 0.7rem;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+  }
+  .gallery-card {
+    padding: 0.7rem 0.2rem;
+    font-size: 0.97rem;
+    border-radius: 10px;
+    width: 98vw;
+    max-width: 99vw;
+    min-width: 0;
+    margin: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .gallery-actions {
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+    width: 100%;
+    align-items: stretch;
+    display: flex;
+  }
+  .gallery-image-wrapper {
+    height: 110px;
+    min-height: 90px;
+    max-height: 120px;
+  }
+  .gallery-title {
+    font-size: 0.98rem;
+    padding: 0 2px;
+    word-break: break-word;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+  .gallery-card {
+    padding: 0.5rem 0.1rem;
+    font-size: 0.93rem;
+    width: 99vw;
+    max-width: 100vw;
+  }
+  .gallery-title {
+    font-size: 0.95rem;
+    padding: 0 1px;
+  }
+  .admin-action-btn,
+  .admin-update-btn,
+  .admin-delete-btn {
+    font-size: 0.93rem;
+    padding: 0.5rem 0.3rem;
+    border-radius: 12px;
+  }
+}
+
+/* Prevent content override and overflow */
+.gallery-card,
+.gallery-title,
+.gallery-image-wrapper {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}

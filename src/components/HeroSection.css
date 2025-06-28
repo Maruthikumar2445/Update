@@ -1,0 +1,62 @@
+.hero-section {
+  min-height: 340px;
+  background: linear-gradient(120deg, #1abc9c 0%, #16a085 100%);
+  color: #fff;
+  border-radius: 0 0 32px 32px;
+  box-shadow: 0 8px 32px rgba(26, 188, 156, 0.18);
+  margin-bottom: 2.5rem;
+  padding: 3.5rem 1rem 2.5rem 1rem;
+  position: relative;
+  overflow: hidden;
+  animation: heroFadeIn 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes heroFadeIn {
+  0% { opacity: 0; transform: scale(0.96);}
+  100% { opacity: 1; transform: scale(1);}
+}
+
+.hero-title {
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  animation: heroTitlePop 1.1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes heroTitlePop {
+  0% { opacity: 0; transform: scale(0.8);}
+  100% { opacity: 1; transform: scale(1);}
+}
+
+.hero-desc {
+  font-size: 1.25rem;
+  color: #e0f7fa;
+  animation: heroDescFade 1.5s;
+}
+
+@keyframes heroDescFade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.hero-section .highlight {
+  color: #ffe082;
+  font-weight: 600;
+}
+
+.hero-section .btn {
+  min-width: 170px;
+  font-size: 1.1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.08);
+  animation: btnPop 1.2s;
+}
+
+.hero-section .btn:hover, .hero-section .btn:focus {
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 8px 24px rgba(44, 62, 80, 0.18);
+}
+
+@keyframes btnPop {
+  0% { opacity: 0; transform: scale(0.8);}
+  100% { opacity: 1; transform: scale(1);}
+}
