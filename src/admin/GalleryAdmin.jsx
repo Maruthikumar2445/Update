@@ -211,30 +211,31 @@ const GalleryAdmin = ({ onBack }) => {
         </div>
         <div className="admin-main-row">
           <div className="admin-header-actions">
-            {/* <button className="admin-back-btn" onClick={onBack}>
-              Back to Dashboard
-            </button> */}
-            <button
-              className="admin-action-btn"
-              onClick={() => setShowAddGallery(true)}
-            >
-              {viewType === "photo" ? "+ Add Photo" : "+ Add Video"}
-            </button>
+            <div className="gallery-actions-column">
+              <button
+                className="admin-action-btn"
+                onClick={() => setShowAddGallery(true)}
+                style={{ width: 180 }}
+              >
+                {viewType === "photo" ? "+ Add Photo" : "+ Add Video"}
+              </button>
+              <button
+                className={`toggle-btn ${viewType === "photo" ? "active" : ""}`}
+                onClick={() => setViewType("photo")}
+                style={{ width: 180 }}
+              >
+                Photos
+              </button>
+              <button
+                className={`toggle-btn ${viewType === "video" ? "active" : ""}`}
+                onClick={() => setViewType("video")}
+                style={{ width: 180 }}
+              >
+                Videos
+              </button>
+            </div>
           </div>
-          {/* Toggle above grid */}
-          <div className="mb-4 d-flex gap-2 justify-content-center">
-            <button
-              className={`toggle-btn ${viewType === "photo" ? "active" : ""}`}
-              onClick={() => setViewType("photo")}
-            >
-              Photos
-            </button>
-            <button
-              className={`toggle-btn ${viewType === "video" ? "active" : ""}`}
-              onClick={() => setViewType("video")}
-            >
-              Videos
-            </button>
+          <div className="gallery-toggle-row mb-4 d-flex flex-column align-items-center gap-2">
           </div>
 
           <div className="gallery-grid">

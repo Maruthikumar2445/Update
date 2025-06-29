@@ -112,6 +112,14 @@
   padding: 1.2rem 1.5rem 1.2rem 1.5rem;
 }
 
+.gallery-actions-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  margin-bottom: 2.5rem;
+}
+
 /* Button styles (reuse from blogs for consistency) */
 .admin-update-btn,
 .admin-delete-btn {
@@ -162,6 +170,15 @@
 }
 .toggle-btn:not(:last-child) {
   margin-right: 0.7rem;
+}
+
+/* Move the toggle buttons further down from the add button */
+.gallery-toggle-row {
+  margin-top: 1.5rem;
+}
+.gallery-toggle-row .toggle-btn {
+  width: 180px;
+  margin-right: 0;
 }
 
 /* Responsive */
