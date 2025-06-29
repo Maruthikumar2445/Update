@@ -180,6 +180,10 @@ const GalleryAdmin = ({ onBack }) => {
       const id = url.split("youtu.be/")[1].split("?")[0];
       return `https://www.youtube.com/embed/${id}`;
     }
+    if (url.includes("youtube.com/shorts/")) {
+      const id = url.split("youtube.com/shorts/")[1].split(/[?&/]/)[0];
+      return `https://www.youtube.com/embed/${id}`;
+    }
     // Vimeo
     if (url.includes("vimeo.com/")) {
       const id = url.split("vimeo.com/")[1].split(/[?/]/)[0];
