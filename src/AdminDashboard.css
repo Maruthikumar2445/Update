@@ -599,3 +599,108 @@
   overflow-x: hidden;
   min-height: 100vh;
 }
+
+/* Modern Card */
+.card-modern {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(44,62,80,0.10);
+  padding: 1.3rem 1.2rem 1.1rem 1.2rem;
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.card-modern:hover {
+  box-shadow: 0 6px 32px rgba(44,62,80,0.13);
+  transform: translateY(-2px) scale(1.01);
+}
+
+/* Modern Button */
+.btn-modern {
+  background: #1abc9c;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 0.7rem 2rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  margin: 0.2rem 0.5rem 0.2rem 0;
+}
+.btn-modern:hover {
+  background: #16a085;
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(44,62,80,0.13);
+}
+
+/* Outline Button */
+.btn-outline-modern {
+  background: #fff;
+  color: #1abc9c;
+  border: 2px solid #1abc9c;
+  border-radius: 22px;
+  padding: 0.7rem 2rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  margin: 0.2rem 0.5rem 0.2rem 0;
+}
+.btn-outline-modern:hover {
+  background: #1abc9c;
+  color: #fff;
+}
+
+/* Responsive grid for cards */
+.grid-modern {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin: 2rem 0;
+}
+@media (max-width: 991px) {
+  .grid-modern {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+}
+@media (max-width: 767px) {
+  .grid-modern {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Modern Modal/Overlay */
+.admin-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(44, 62, 80, 0.18);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  padding-top: 40px;
+}
+.admin-overlay-form {
+  position: relative;
+  z-index: 10000;
+  margin: 0 auto;
+  max-width: 540px;
+  width: 100%;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 24px rgba(44,62,80,0.13);
+  padding: 2.2rem 1.2rem 2.5rem 1.2rem;
+}
+@media (max-width: 767px) {
+  .admin-overlay-form {
+    max-width: 99vw;
+    padding: 1.2rem 0.3rem 2.5rem 0.3rem;
+    border-radius: 12px;
+  }
+}

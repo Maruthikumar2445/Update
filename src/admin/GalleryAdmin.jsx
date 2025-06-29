@@ -30,6 +30,9 @@ const GalleryAdmin = ({ onBack }) => {
     base64: "",
     imagePreview: ""
   });
+  const [viewType, setViewType] = useState("photo"); // "photo" or "video"
+  const [videoForm, setVideoForm] = useState({ url: "" });
+  const [galleryVideos, setGalleryVideos] = useState([]);
 
   // Load gallery from Realtime Database
   useEffect(() => {
@@ -44,6 +47,24 @@ const GalleryAdmin = ({ onBack }) => {
         setGallery(images.reverse());
       } else {
         setGallery([]);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Load videos from Realtime Database
+  useEffect(() => {
+    const videosDbRef = dbRef(database, "galleryVideos");
+    const unsubscribe = onValue(videosDbRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const videos = Object.entries(data).map(([id, value]) => ({
+          id,
+          ...value
+        }));
+        setGalleryVideos(videos.reverse());
+      } else {
+        setGalleryVideos([]);
       }
     });
     return () => unsubscribe();
@@ -123,6 +144,64 @@ const GalleryAdmin = ({ onBack }) => {
     }
   };
 
+  // Add Video
+  const handleAddVideo = async (e) => {
+    e.preventDefault();
+    if (!videoForm.url) return;
+    try {
+      const videosDbRef = dbRef(database, "galleryVideos");
+      const newVideoRef = push(videosDbRef);
+      await set(newVideoRef, {
+        url: videoForm.url
+      });
+      setShowAddGallery(false);
+      setVideoForm({ url: "" });
+      alert("Video added successfully!");
+    } catch (error) {
+      alert("Failed to add video");
+    }
+  };
+
+  const handleDeleteVideo = async (id) => {
+    try {
+      await remove(dbRef(database, `galleryVideos/${id}`));
+    } catch (error) {
+      alert("Failed to delete video");
+    }
+  };
+
+  function getEmbedUrl(url) {
+    // YouTube
+    if (url.includes("youtube.com/watch?v=")) {
+      const id = url.split("v=")[1].split("&")[0];
+      return `https://www.youtube.com/embed/${id}`;
+    }
+    if (url.includes("youtu.be/")) {
+      const id = url.split("youtu.be/")[1].split("?")[0];
+      return `https://www.youtube.com/embed/${id}`;
+    }
+    // Vimeo
+    if (url.includes("vimeo.com/")) {
+      const id = url.split("vimeo.com/")[1].split(/[?/]/)[0];
+      return `https://player.vimeo.com/video/${id}`;
+    }
+    // Google Drive
+    if (url.includes("drive.google.com")) {
+      // Handles both open?id= and file/d/ links
+      let id = "";
+      if (url.includes("/file/d/")) {
+        id = url.split("/file/d/")[1].split("/")[0];
+      } else if (url.includes("id=")) {
+        id = url.split("id=")[1].split("&")[0];
+      }
+      if (id) {
+        return `https://drive.google.com/file/d/${id}/preview`;
+      }
+    }
+    // Default: return original (may fail)
+    return url;
+  }
+
   return (
     <section className="gallery-section" style={{ minHeight: "100vh" }}>
       <div className="container">
@@ -139,40 +218,106 @@ const GalleryAdmin = ({ onBack }) => {
               className="admin-action-btn"
               onClick={() => setShowAddGallery(true)}
             >
-              + Add Gallery
+              {viewType === "photo" ? "+ Add Photo" : "+ Add Video"}
             </button>
           </div>
+          {/* Toggle above grid */}
+          <div className="mb-4 d-flex gap-2 justify-content-center">
+            <button
+              className={`toggle-btn ${viewType === "photo" ? "active" : ""}`}
+              onClick={() => setViewType("photo")}
+            >
+              Photos
+            </button>
+            <button
+              className={`toggle-btn ${viewType === "video" ? "active" : ""}`}
+              onClick={() => setViewType("video")}
+            >
+              Videos
+            </button>
+          </div>
+
           <div className="gallery-grid">
-            {gallery.map(g => (
-              <div className="gallery-card" key={g.id}>
-                <div className="gallery-image-wrapper">
-                  {/* Only show image if base64 exists and is valid */}
-                  {g.base64 && g.base64.startsWith("data:image") ? (
-                    <img src={g.base64} alt={g.destination} />
-                  ) : (
-                    <div style={{color: "#888", textAlign: "center"}}>No Image</div>
-                  )}
+            {viewType === "photo" && (
+              gallery.length === 0 ? (
+                <div style={{
+                  color: "#888",
+                  textAlign: "center",
+                  width: "100%",
+                  padding: "40px 0",
+                  fontSize: "1.1rem"
+                }}>
+                  No photos available.
                 </div>
-                <div className="gallery-title">{g.destination}</div>
-                <div className="gallery-actions">
-                  <button className="admin-update-btn" onClick={() => {
-                    setEditingGallery(g);
-                    setEditGalleryForm({
-                      destination: g.destination,
-                      file: null,
-                      base64: g.base64,
-                      imagePreview: g.base64
-                    });
-                  }}>Update</button>
-                  <button 
-                    className="admin-delete-btn" 
-                    onClick={() => handleDeleteGallery(g.id)}
-                  >
-                    Delete
-                  </button>
+              ) : (
+                gallery.map(g => (
+                  <div className="gallery-card" key={g.id}>
+                    <div className="gallery-image-wrapper">
+                      {g.base64 && g.base64.startsWith("data:image") ? (
+                        <img src={g.base64} alt={g.destination} />
+                      ) : (
+                        <div style={{color: "#888", textAlign: "center"}}>No Image</div>
+                      )}
+                    </div>
+                    <div className="gallery-title">{g.destination}</div>
+                    <div className="gallery-actions">
+                      <button className="admin-update-btn" onClick={() => {
+                        setEditingGallery(g);
+                        setEditGalleryForm({
+                          destination: g.destination,
+                          file: null,
+                          base64: g.base64,
+                          imagePreview: g.base64
+                        });
+                      }}>Update</button>
+                      <button 
+                        className="admin-delete-btn" 
+                        onClick={() => handleDeleteGallery(g.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )
+            )}
+            {viewType === "video" && (
+              galleryVideos.length === 0 ? (
+                <div style={{
+                  color: "#888",
+                  textAlign: "center",
+                  width: "100%",
+                  padding: "40px 0",
+                  fontSize: "1.1rem"
+                }}>
+                  No videos available.
                 </div>
-              </div>
-            ))}
+              ) : (
+                galleryVideos.map(v => (
+                  <div className="gallery-card" key={v.id}>
+                    <div className="gallery-image-wrapper" style={{padding: 0, height: 180}}>
+                      <iframe
+                        src={getEmbedUrl(v.url)}
+                        title="Gallery Video"
+                        style={{ width: "100%", height: "100%", border: 0, borderRadius: 8 }}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                    <div className="gallery-title">Video</div>
+                    <div className="gallery-actions">
+                      {/* Optionally add update button here if you want */}
+                      <button 
+                        className="admin-delete-btn" 
+                        onClick={() => handleDeleteVideo(v.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )
+            )}
           </div>
         </div>
         {showAddGallery && (
@@ -182,55 +327,92 @@ const GalleryAdmin = ({ onBack }) => {
                 <button className="admin-back-btn" onClick={() => setShowAddGallery(false)}>
                   ← Cancel
                 </button>
-                <h2 className="admin-form-title">Add Photo</h2>
+                <h2 className="admin-form-title">
+                  Add {viewType === "photo" ? "Photo" : "Video"}
+                </h2>
                 <span style={{ minWidth: 180 }}></span>
               </div>
-              <form className="row g-3 mb-5" onSubmit={handleAddGallery}>
-                <div className="col-md-6">
-                  <label className="form-label">Destination</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={galleryForm.destination}
-                    onChange={e => setGalleryForm({ ...galleryForm, destination: e.target.value })}
-                    // required removed
-                    placeholder="Optional"
-                  />
-                </div>
-                <div className="col-md-6">
-                  <label className="form-label">Image</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="form-control"
-                    onChange={handleGalleryImageChange}
-                    required
-                  />
-                  {galleryImagePreview && (
-                    <img
-                      src={galleryImagePreview}
-                      alt="Preview"
-                      style={{ width: "100%", marginTop: 10, borderRadius: 8, objectFit: "cover", height: 120 }}
-                    />
-                  )}
-                </div>
-                <div className="col-12 text-end">
-                  <button type="submit" className="admin-action-btn" style={{ marginRight: 8 }}>
-                    Add
-                  </button>
-                  <button
-                    type="button"
-                    className="admin-action-btn"
-                    style={{ background: "#eee", color: "#333" }}
-                    onClick={() => {
-                      setShowAddGallery(false);
-                      setGalleryImagePreview(null);
-                    }}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
+              {viewType === "photo" ? (
+                <form onSubmit={handleAddGallery}>
+                  <div className="row g-3 mb-5">
+                    <div className="col-md-6">
+                      <label className="form-label">Destination</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={galleryForm.destination}
+                        onChange={e => setGalleryForm({ ...galleryForm, destination: e.target.value })}
+                        placeholder="Optional"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Image</label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="form-control"
+                        onChange={handleGalleryImageChange}
+                        required
+                      />
+                      {galleryImagePreview && (
+                        <img
+                          src={galleryImagePreview}
+                          alt="Preview"
+                          style={{ width: "100%", marginTop: 10, borderRadius: 8, objectFit: "cover", height: 120 }}
+                        />
+                      )}
+                    </div>
+                    <div className="col-12 text-end">
+                      <button type="submit" className="admin-action-btn" style={{ marginRight: 8 }}>
+                        Add
+                      </button>
+                      <button
+                        type="button"
+                        className="admin-action-btn"
+                        style={{ background: "#eee", color: "#333" }}
+                        onClick={() => {
+                          setShowAddGallery(false);
+                          setGalleryImagePreview(null);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              ) : (
+                <form onSubmit={handleAddVideo}>
+                  <div className="row g-3 mb-5">
+                    <div className="col-md-12">
+                      <label className="form-label">Video URL (YouTube/Vimeo)</label>
+                      <input
+                        type="url"
+                        className="form-control"
+                        value={videoForm.url}
+                        onChange={e => setVideoForm({ url: e.target.value })}
+                        required
+                        placeholder="Paste video URL here"
+                      />
+                    </div>
+                    <div className="col-12 text-end">
+                      <button type="submit" className="admin-action-btn" style={{ marginRight: 8 }}>
+                        Add
+                      </button>
+                      <button
+                        type="button"
+                        className="admin-action-btn"
+                        style={{ background: "#eee", color: "#333" }}
+                        onClick={() => {
+                          setShowAddGallery(false);
+                          setVideoForm({ url: "" });
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         )}
