@@ -16,13 +16,13 @@ import {
 
 // Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyBFfBeD_q7N5BHUSVUFjmp8N47ihLiMQDc",
-  authDomain: "frugaltrailphotos.firebaseapp.com",
-  projectId: "frugaltrailphotos",
-  messagingSenderId: "387948789176",
-  appId: "1:387948789176:web:2174d8a080369751de634d",
-  databaseURL:
-    "https://frugaltrailphotos-default-rtdb.asia-southeast1.firebasedatabase.app",
+  apiKey: "AIzaSyAt2hBdvPBiq91odRqu9wGFVfdODX0wbxA",
+  authDomain: "frugaltrail-7eb2c.firebaseapp.com",
+  databaseURL: "https://frugaltrail-7eb2c-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "frugaltrail-7eb2c",
+  storageBucket: "frugaltrail-7eb2c.firebasestorage.app",
+  messagingSenderId: "437021902208",
+  appId: "1:437021902208:web:6da1c0d0e16adf6a2d6d65"
 };
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
@@ -37,9 +37,9 @@ const TestimonialsAdmin = ({ onBack }) => {
     role: "",
     quote: "",
     paragraph: "",
-    rating: 5,
     location: "",
-    image: null, // add image field
+    rating: 5,
+    image: null,
   });
   const [testimonialImagePreview, setTestimonialImagePreview] = useState(null);
 
